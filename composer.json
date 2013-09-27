@@ -1,0 +1,11 @@
+{
+    "require": {
+        "dflydev/markdown": "1.0.*@dev",
+        "slim/slim": "2.3.1",
+        "galen/validator": "dev-master",
+        "galen/blog-simple": "dev-master"
+    },
+    "config": {
+        "vendor-dir": "system/vendor"
+    }
+}
