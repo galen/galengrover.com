@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title><?php if( isset( $page_title ) ): ?><?php echo e( $page_title ) ?> - <?php endif; ?>Galen Grover, CT Web Developer</title>
+<title><?php if( isset( $page_title ) ): ?><?php echo e( $page_title ) ?> - <?php endif; ?>BlogSimple</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
 <style type="text/css">
 html { overflow-y: scroll;}
@@ -62,7 +62,7 @@ form label { display:block; margin-bottom: 5px; }
 
 <div id="header-wrapper">
     <div id="header">
-        <a href="/"><img src="http://www.galengrover.com/images/logo.png"></a>
+        <a href="/"><img src="/public/images/logo.png"></a>
     </div>
 </div>
 
