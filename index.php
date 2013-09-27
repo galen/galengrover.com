@@ -8,8 +8,7 @@ require( 'system/config.php' );
 require( 'system/functions.php' );
 
 // Blog stuff
-$datastore = new \BlogSimple\Datastore\MysqlDatastore( MYSQL_HOST, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE );
-//$datastore = new \BlogSimple\Datastore\SqliteDatastore( __DIR__ . '/blog.sqlite' );
+$datastore = new \BlogSimple\Datastore\SqliteDatastore( __DIR__ . '/blog.sqlite' );
 $blog = new \BlogSimple\BlogSimple( $datastore );
 $blog->setPostsPerPage( POSTS_PER_PAGE );
 
