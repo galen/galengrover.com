@@ -30,7 +30,7 @@ $app->get('/(:page/)', function ( $page = 1 ) use ( $registry ) {
 
     $route_name = 'home';
     $posts = $registry->blog->getPosts( $page, $registry->post_conditions );
-    $pagination = $registry->blog->getPagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
+    $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
     require( 'system/views/blog_home.php' );
 
 })->name( 'home' );
@@ -86,7 +86,7 @@ $app->get('/tag/:tag/(:page/)', function ( $tag, $page = 1 ) use ( $registry ) {
 
     $route_name = 'tag';
     $posts = $registry->blog->getPostsWithAttributeAndValue( 'tag', $tag, $page, $registry->post_conditions );
-    $pagination = $registry->blog->getPagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
+    $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
     $page_title = "Tag: $tag";
     require( 'system/views/blog_tag.php' );
 
@@ -97,7 +97,7 @@ $app->get('/category/:category/(:page/)', function ( $category, $page = 1 ) use 
     
     $route_name = 'category';
     $posts = $registry->blog->getPostsWithAttributeAndValue( 'category', $category, $page, $registry->post_conditions );
-    $pagination = $registry->blog->getPagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
+    $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
     $page_title = "Category: $category";
     require( 'system/views/blog_category.php' );
 
