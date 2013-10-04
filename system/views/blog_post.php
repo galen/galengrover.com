@@ -26,19 +26,19 @@
 <?php endif; ?>
 
 <?php if( count( $comments ) ): ?>
-<h2 class="post-list-header">Comments (<?php echo count( $comments ) ?>)</h2>
+<h2 id="comments" class="post-list-header">Comments (<?php echo count( $comments ) ?>)</h2>
 <?php endif; ?>
 
 <?php foreach( $comments as $comment ): ?>
-<div class="comment">
+<div id="comment-<?php echo e( $comment->id ) ?>" class="comment comment-<?php echo e( $comment->id ) ?>">
     <p class="comment-name"><?php if( $comment->email ): ?><a href="mailto:<?php echo e( $comment->email ) ?>"><?php endif; ?><?php echo e( $comment->name ) ?><?php if( $comment->email ): ?></a><?php endif; ?> <span class="comment-timestamp"><?php echo e( date( 'M jS, Y @ g:i a', strtotime( $comment->timestamp ) ) ) ?></span></p>
     <?php echo $registry->markdown_parser->transformMarkdown( e( $comment->text ) ) ?>
 </div>
 <?php endforeach; ?>
 
-<h2 id="comments" class="post-list-header" >Add Comment</h2>
+<h2 id="comment-form" class="post-list-header" >Add Comment</h2>
 <div class="add-comment">
-    <form action="#comments" method="post">
+    <form action="#comment-form" method="post">
         <fieldset>
             <div>
                 <label for="#comments">Name</label>

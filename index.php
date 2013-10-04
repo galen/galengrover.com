@@ -42,7 +42,9 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
     if ( isset( $_POST['comment'] ) ) {
         $validator = new \Validator\Validator;
         $validator->addRule( new \Validator\Rule\MinLength( 2 ), 'name', 'Your name must be atleast 2 characters', 'Please enter your name' );
-        $validator->addRule( new \Validator\Rule\IfNotEmpty( new \Validator\Rule\Email ), 'email', 'Please enter a valid email address' );
+        if ( !empty( $_POST['email'] ) ){
+            $validator->addRule( new \Validator\Rule\Email, 'email', 'Please enter a valid email address' );
+        }
         $validator->addRule( new \Validator\Rule\MinLength( 2 ), 'text', 'Your comment must be atleast 2 characters', 'Please add a comment' );
         if ( !$validator->validate( $_POST['comment'] ) ) {
             $comment_error = $validator->getFirstError();
@@ -50,7 +52,7 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
         else {
             try {
                 $result = $registry->blog->addComment( new \BlogSimple\Entity\Comment( $_POST['comment'] ) );
-                unset( $comment_save );
+                unset( $_POST );
             }
             catch( \Exception $e ) {
                 $comment_error = 'Unexpected Error';
