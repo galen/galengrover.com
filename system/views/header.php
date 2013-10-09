@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title><?php if( isset( $page_title ) ): ?><?php echo e( $page_title ) ?> - <?php endif; ?>BlogSimple</title>
+<title><?php if( isset( $page_title ) ): ?><?php echo e( $page_title ) ?> - <?php endif; ?>Phlog</title>
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
 <link href="/public/css/style.css" rel="stylesheet" type="text/css">
 </head>

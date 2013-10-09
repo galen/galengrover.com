@@ -1,11 +1,11 @@
 <?php foreach( $posts as $post ): ?>
 
 <div class="post">
-    <h1><a href="<?php echo $registry->app->urlFor( 'post', array( 'post_id' => $post->id, 'post_slug' => $post->getSlug() ) ) ?>"><?php echo e( $post->title ) ?></a></h1>
+    <h1><a href="<?php echo $registry->app->urlFor( 'post', array( 'post_id' => $post->id, 'post_slug' => slug( $post->title ) ) ) ?>"><?php echo e( $post->title ) ?></a></h1>
     <p class="post-timestamp"><?php echo e( date( 'M jS, Y @ g:i a', strtotime( $post->timestamp ) ) ) ?></p>
     <div class="post-exerpt"><?php echo $registry->markdown_parser->transformMarkdown( e( $post->getExcerpt() ) ) ?></div>
     <div class="post-meta">
-        <p><a href="<?php echo $registry->app->urlFor( 'post', array( 'post_id' => $post->id, 'post_slug' => $post->getSlug() ) ) ?>">Read More</a></p>
+        <p><a href="<?php echo $registry->app->urlFor( 'post', array( 'post_id' => $post->id, 'post_slug' => slug( $post->title ) ) ) ?>">Read More</a></p>
     </div>
 </div>
 

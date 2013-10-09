@@ -25,11 +25,12 @@ a:hover { color: #e01313 }
 .post-attributes p {margin:0;padding:0;color: #ccc;}
 .post-attributes a { color:#d87c19 ; }
 .post-attributes a:hover { text-decoration:underline; }
-.tag-list a{ margin: 0 2px 0 0; }
+.attribute-list a{ margin: 0 2px 0 0; }
 
 #sidebar {background:#fff; float:left; margin-left: 20px; width:260px;padding: 20px 30px 20px 30px;}
 #sidebar h2 { color: #d87c19; margin-bottom: 10px; }
 #sidebar ul { list-style:none;margin:0 0 20px 1em;padding:0;list-style-position:outside;list-style-type:circle; }
+#sidebar .active { font-weight:bold; }
 
 fieldset { border:0; }
 .comment { background:#fff; padding: 10px 30px; margin-bottom:20px; }

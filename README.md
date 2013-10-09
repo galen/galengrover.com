@@ -1,4 +1,4 @@
-#BlogSimple example blog
+#Phlog example blog
 
 ##Requirements
 

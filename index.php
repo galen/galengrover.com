@@ -8,8 +8,8 @@ require( 'system/config.php' );
 require( 'system/functions.php' );
 
 // Blog stuff
-$datastore = new \BlogSimple\Datastore\SqliteDatastore( __DIR__ . '/blog.sqlite' );
-$blog = new \BlogSimple\BlogSimple( $datastore );
+$datastore = new \Phlog\Datastore\SqliteDatastore( __DIR__ . '/blog.sqlite' );
+$blog = new \Phlog\Phlog( $datastore );
 $blog->setPostsPerPage( POSTS_PER_PAGE );
 
 // Slim app
@@ -31,7 +31,7 @@ $app->get('/(:page/)', function ( $page = 1 ) use ( $registry ) {
     $route_name = 'home';
     $posts = $registry->blog->getPosts( $page, $registry->post_conditions );
     $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
-    require( 'system/views/blog_home.php' );
+    require( 'system/views/home.php' );
 
 })->name( 'home' );
 
@@ -42,19 +42,22 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
     if ( isset( $_POST['comment'] ) ) {
         $validator = new \Validator\Validator;
         $validator->addRule( new \Validator\Rule\MinLength( 2 ), 'name', 'Your name must be atleast 2 characters', 'Please enter your name' );
-        if ( !empty( $_POST['email'] ) ){
+        if ( !empty( $_POST['comment']['email'] ) ){
             $validator->addRule( new \Validator\Rule\Email, 'email', 'Please enter a valid email address' );
         }
         $validator->addRule( new \Validator\Rule\MinLength( 2 ), 'text', 'Your comment must be atleast 2 characters', 'Please add a comment' );
+        $validator->addRule( new \Validator\Rule\NotEmpty, 'not_spam', 'Please verify that you are not spam' );
         if ( !$validator->validate( $_POST['comment'] ) ) {
             $comment_error = $validator->getFirstError();
         }
         else {
             try {
-                $result = $registry->blog->addComment( new \BlogSimple\Entity\Comment( $_POST['comment'] ) );
+                unset( $_POST['comment']['not_spam'] );
+                $result = $registry->blog->addComment( new \Phlog\Entity\Comment( $_POST['comment'] ) );
                 unset( $_POST );
             }
             catch( \Exception $e ) {
+                echo $e->getMessage();
                 $comment_error = 'Unexpected Error';
             }
         }
@@ -72,13 +75,13 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
         $comments = $registry->blog->getPostComments( $post_id );
         $page_title = $post->title;
 
-        require( 'system/views/blog_post.php' );
+        require( 'system/views/post.php' );
     }
-    catch( \BlogSimple\Exception\InvalidPostException $e ) {
+    catch( \Phlog\Exception\InvalidPostException $e ) {
         $registry->app->response->setStatus( 404 );
         $error = 'Invalid Post';
-        require( 'system/views/blog_header.php' );
-        require( 'system/views/blog_footer.php' );
+        require( 'system/views/header.php' );
+        require( 'system/views/footer.php' );
     }
 
 })->name( 'post' )->via( 'GET', 'POST' );
@@ -90,7 +93,7 @@ $app->get('/tag/:tag/(:page/)', function ( $tag, $page = 1 ) use ( $registry ) {
     $posts = $registry->blog->getPostsWithAttributeAndValue( 'tag', $tag, $page, $registry->post_conditions );
     $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
     $page_title = "Tag: $tag";
-    require( 'system/views/blog_tag.php' );
+    require( 'system/views/tag.php' );
 
 })->name( 'tag' );
 
@@ -98,10 +101,10 @@ $app->get('/tag/:tag/(:page/)', function ( $tag, $page = 1 ) use ( $registry ) {
 $app->get('/category/:category/(:page/)', function ( $category, $page = 1 ) use ( $registry ) {
     
     $route_name = 'category';
-    $posts = $registry->blog->getPostsWithAttributeAndValue( 'category', $category, $page, $registry->post_conditions );
+    $posts = $registry->blog->getPostsWithAttributeAndValue( 'category', unslug( $category ), $page, $registry->post_conditions );
     $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
     $page_title = "Category: $category";
-    require( 'system/views/blog_category.php' );
+    require( 'system/views/category.php' );
 
 })->name( 'category' );
 
