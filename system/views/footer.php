@@ -16,14 +16,14 @@
 <h2>Categories</h2>
 <ul class="categories">
     <?php foreach( $registry->categories as $category_ ): ?>
-    <li<?php if( $route_name == 'category' && $category == slug( $category_->value ) ): ?> class="active"<?php endif; ?>><a href="<?php echo $registry->app->urlFor( 'category', array( 'category' => slug( $category_->value ) ) ) ?>"><?php echo e( $category_->value ) ?></a></li>
+    <li<?php if( $route_name == 'category' && $category == slug( $category_ ) ): ?> class="active"<?php endif; ?>><a href="<?php echo $registry->app->urlFor( 'category', array( 'category' => slug( $category_ ) ) ) ?>"><?php echo e( $category_ ) ?></a></li>
     <?php endforeach; ?>
 </ul>
 
 <h2>Tags</h2>
 <ul class="tags">
     <?php foreach( $registry->tags as $tag_ ): ?>
-    <li<?php if( $route_name == 'tag' && $tag == $tag_->value ): ?> class="active"<?php endif; ?>><a href="<?php echo $registry->app->urlFor( 'tag', array( 'tag' => $tag_->value ) ) ?>"><?php echo e( $tag_->value ) ?></a></li>
+    <li<?php if( $route_name == 'tag' && $tag == $tag_ ): ?> class="active"<?php endif; ?>><a href="<?php echo $registry->app->urlFor( 'tag', array( 'tag' => $tag_ ) ) ?>"><?php echo e( $tag_ ) ?></a></li>
     <?php endforeach; ?>
 </ul>
 

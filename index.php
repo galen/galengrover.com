@@ -9,6 +9,7 @@ require( 'system/functions.php' );
 
 // Blog stuff
 $datastore = new \Phlog\Datastore\SqliteDatastore( __DIR__ . '/blog.sqlite' );
+$datastore->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
 $blog = new \Phlog\Phlog( $datastore );
 $blog->setPostsPerPage( POSTS_PER_PAGE );
 
@@ -18,18 +19,24 @@ $app = new \Slim\Slim;
 // Registry to pass to the routes
 $registry = new StdClass;
 $registry->post_conditions = array( 'active' => 1 );
-$registry->categories = $blog->getPostAttributeValues( 'category', $registry->post_conditions );
-$registry->tags = $blog->getPostAttributeValues( 'tag', $registry->post_conditions );
+$registry->categories = $blog->getAttributeValues( 'category', $registry->post_conditions );
+$registry->tags = $blog->getAttributeValues( 'tag', $registry->post_conditions );
 $registry->recent_posts = $blog->getPosts( 1, array( 'active' => 1 ) );
 $registry->blog = $blog;
 $registry->app = $app;
 $registry->markdown_parser = new \dflydev\markdown\MarkdownParser();
-
 // Home page
 $app->get('/(:page/)', function ( $page = 1 ) use ( $registry ) {
 
     $route_name = 'home';
-    $posts = $registry->blog->getPosts( $page, $registry->post_conditions );
+    $posts = $registry->blog->getPosts( (int) $page, $registry->post_conditions );
+    if ( count( $posts ) == 0 ) {
+        $registry->app->response->setStatus( 404 );
+        $error = 'Invalid page';
+        require( 'system/views/header.php' );
+        require( 'system/views/footer.php' );
+        exit;
+    }
     $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
     require( 'system/views/home.php' );
 
@@ -64,12 +71,9 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
     }
 
     try {
+
         $post = $registry->blog->getPost( $post_id, $registry->post_conditions );
-        $post_attributes = $registry->blog->organizePostAttributes(
-            $registry->blog->getPostAttributes( $post_id ),
-            'attribute',
-            'value'
-        );
+        $post_attributes = $registry->blog->getPostAttributes( $post_id )->organize();
         $next_post = $registry->blog->getNextPost( $post_id, $registry->post_conditions );
         $previous_post = $registry->blog->getPreviousPost( $post_id, $registry->post_conditions );
         $comments = $registry->blog->getPostComments( $post_id );
@@ -82,6 +86,12 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
         $error = 'Invalid Post';
         require( 'system/views/header.php' );
         require( 'system/views/footer.php' );
+    }
+    catch( \Exception $e ) {
+        $registry->app->response->setStatus( 500 );
+        $error = 'Unknown Error';
+        require( 'system/views/header.php' );
+        require( 'system/views/footer.php' ); 
     }
 
 })->name( 'post' )->via( 'GET', 'POST' );
