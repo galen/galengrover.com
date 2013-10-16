@@ -9,6 +9,7 @@ require( 'system/functions.php' );
 
 // Blog stuff
 $datastore = new \Phlog\Datastore\SqliteDatastore( __DIR__ . '/blog.sqlite' );
+$datastore->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 $blog = new \Phlog\Phlog( $datastore );
 $blog->setPostsPerPage( POSTS_PER_PAGE );
 
@@ -24,6 +25,7 @@ $registry->recent_posts = $blog->getPosts( 1, array( 'active' => 1 ) );
 $registry->blog = $blog;
 $registry->app = $app;
 $registry->markdown_parser = new \dflydev\markdown\MarkdownParser();
+
 // Home page
 $app->get('/(:page/)', function ( $page = 1 ) use ( $registry ) {
 
