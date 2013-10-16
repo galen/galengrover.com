@@ -35,11 +35,7 @@ function get_pagination( $current_page, $total_items, $items_per_page, $paginati
 }
 
 function slug( $string, $space = '-' ) {
-    return preg_replace( sprintf( '~-$~', $space ) , '', preg_replace( '~[^a-z0-9]+~i', $space, strtolower( $string ) ) );
-}
-
-function unslug( $string, $space = '-' ) {
-    return str_replace( '-', ' ', $string );
+    return preg_replace( sprintf( '~-$~', $space ) , '', preg_replace( '~[^a-z0-9]+~i', $space, strtolower( str_replace( "'", '', $string ) ) ) );
 }
 
 function linked_list( Slim\Slim $slim, $url_name, $url_segment, array $items, $sep = ', ' ) {

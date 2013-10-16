@@ -3,7 +3,7 @@
 <div class="post">
     <h1><a href="<?php echo $registry->app->urlFor( 'post', array( 'post_id' => $post->id, 'post_slug' => slug( $post->title ) ) ) ?>"><?php echo e( $post->title ) ?></a></h1>
     <p class="post-timestamp"><?php echo e( date( 'M jS, Y @ g:i a', strtotime( $post->timestamp ) ) ) ?></p>
-    <?php echo $registry->markdown_parser->transformMarkdown( e( $post->text ) ); ?>
+    <?php echo $registry->markdown_parser->transformMarkdown( $post->text ); ?>
     <?php if( isset( $post_attributes['category'] ) || isset( $post_attributes['tag'] ) ): ?>
     <div class="post-attributes">
     <?php if( isset( $post_attributes['category'] ) ): ?>

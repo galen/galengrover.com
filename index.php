@@ -112,7 +112,7 @@ $app->get('/tag/:tag/(:page/)', function ( $tag, $page = 1 ) use ( $registry ) {
 $app->get('/category/:category/(:page/)', function ( $category, $page = 1 ) use ( $registry ) {
     
     $route_name = 'category';
-    $posts = $registry->blog->getPostsWithAttributeAndValue( 'category', unslug( $category ), $page, $registry->post_conditions );
+    $posts = $registry->blog->getPostsWithAttributeAndValue( 'category', $category, $page, $registry->post_conditions );
     $pagination = get_pagination( $page, $posts->getTotalPosts(), POSTS_PER_PAGE, PAGINATION_VIEWPORT );
     $page_title = "Category: $category";
     require( 'system/views/category.php' );
