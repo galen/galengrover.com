@@ -8,16 +8,12 @@
     <div class="post-attributes">
     <?php if( isset( $post_attributes['category'] ) ): ?>
         <p class="attribute-list">Categories:
-        <?php foreach( $post_attributes['category'] as $category ): ?>
-        <a href="<?php echo $registry->app->urlFor( 'category', array( 'category' => slug( $category ) ) ) ?>"><?php echo e( $category ) ?></a>
-        <?php endforeach; ?>
+        <?php echo linked_list( $registry->app, 'category', 'category', $post_attributes['category'] ) ?>
         </p>
     <?php endif; ?>
     <?php if( isset( $post_attributes['tag'] ) ): ?>
         <p class="attribute-list">Tags:
-        <?php foreach( $post_attributes['tag'] as $tag ): ?>
-        <a href="<?php echo $registry->app->urlFor( 'tag', array( 'tag' => $tag ) ) ?>"><?php echo e( $tag ) ?></a>
-        <?php endforeach; ?>
+        <?php echo linked_list( $registry->app, 'tag', 'tag', $post_attributes['tag'] ) ?>
         </p>
     <?php endif; ?>
     </div>

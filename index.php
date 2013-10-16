@@ -9,7 +9,6 @@ require( 'system/functions.php' );
 
 // Blog stuff
 $datastore = new \Phlog\Datastore\SqliteDatastore( __DIR__ . '/blog.sqlite' );
-$datastore->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
 $blog = new \Phlog\Phlog( $datastore );
 $blog->setPostsPerPage( POSTS_PER_PAGE );
 
@@ -78,7 +77,6 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
         $previous_post = $registry->blog->getPreviousPost( $post_id, $registry->post_conditions );
         $comments = $registry->blog->getPostComments( $post_id );
         $page_title = $post->title;
-
         require( 'system/views/post.php' );
     }
     catch( \Phlog\Exception\InvalidPostException $e ) {
@@ -88,6 +86,7 @@ $app->map('/blog/:post_id/:post_slug/', function ( $post_id, $post_slug ) use ( 
         require( 'system/views/footer.php' );
     }
     catch( \Exception $e ) {
+        echo $e->getMessage();
         $registry->app->response->setStatus( 500 );
         $error = 'Unknown Error';
         require( 'system/views/header.php' );

@@ -1,4 +1,3 @@
-system/config.php
 system/vendor
 composer.lock
 .DS_Store

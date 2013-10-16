@@ -41,3 +41,15 @@ function slug( $string, $space = '-' ) {
 function unslug( $string, $space = '-' ) {
     return str_replace( '-', ' ', $string );
 }
+
+function linked_list( Slim\Slim $slim, $url_name, $url_segment, array $items, $sep = ', ' ) {
+    return implode(
+        $sep,
+        array_map(
+            function( $item ) use( $slim, $url_name, $url_segment ) {
+                return '<a href="' . $slim->urlFor( $url_name, array( $url_segment => $item ) ) . '">' . e( $item ) . '</a>';
+            },
+            $items
+        )
+    );
+}
