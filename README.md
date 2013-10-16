@@ -1,4 +1,4 @@
-#Phlog example blog
+#galengrover.com source
 
 ##Requirements
 
@@ -9,7 +9,3 @@
 
 1. git clone
 3. composer install
-
-##TODO
-
-- Allow configuration of table names and fields
